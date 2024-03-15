@@ -65,7 +65,7 @@
             listBoxSong.Name = "listBoxSong";
             listBoxSong.Size = new Size(200, 464);
             listBoxSong.TabIndex = 0;
-            listBoxSong.SelectedIndexChanged += listBoxSong_SelectedIndexChanged;
+            listBoxSong.SelectedIndexChanged += ListBoxSong_SelectedIndexChanged;
             // 
             // tableLayoutPanel1
             // 
@@ -164,7 +164,7 @@
             buttonAdd.TabIndex = 6;
             buttonAdd.Text = "Add";
             buttonAdd.UseVisualStyleBackColor = true;
-            buttonAdd.Click += buttonAdd_Click;
+            buttonAdd.Click += ButtonAdd_Click;
             // 
             // buttonUpdate
             // 
@@ -174,7 +174,7 @@
             buttonUpdate.TabIndex = 7;
             buttonUpdate.Text = "Update";
             buttonUpdate.UseVisualStyleBackColor = true;
-            buttonUpdate.Click += buttonUpdate_Click;
+            buttonUpdate.Click += ButtonUpdate_Click;
             // 
             // buttonDelete
             // 
@@ -184,7 +184,7 @@
             buttonDelete.TabIndex = 8;
             buttonDelete.Text = "Delete";
             buttonDelete.UseVisualStyleBackColor = true;
-            buttonDelete.Click += buttonDelete_Click;
+            buttonDelete.Click += ButtonDelete_Click;
             // 
             // textBoxTitle
             // 
@@ -247,7 +247,7 @@
             buttonRefresh.TabIndex = 2;
             buttonRefresh.Text = "Refresh";
             buttonRefresh.UseVisualStyleBackColor = true;
-            buttonRefresh.Click += buttonRefresh_Click;
+            buttonRefresh.Click += ButtonRefresh_Click;
             // 
             // labelValidation
             // 
@@ -300,7 +300,7 @@
             buttonSearch.TabIndex = 8;
             buttonSearch.Text = "Search";
             buttonSearch.UseVisualStyleBackColor = true;
-            buttonSearch.Click += buttonSearch_Click;
+            buttonSearch.Click += ButtonSearch_Click;
             // 
             // Form1
             // 

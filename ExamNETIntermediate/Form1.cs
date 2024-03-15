@@ -74,7 +74,7 @@ namespace ExamNETIntermediate
         }
 
         // Nama function otomatis buat pas di click jadi nama depan huruf kecil klo ganti takut error
-        private void buttonRefresh_Click(object sender, EventArgs e)
+        private void ButtonRefresh_Click(object sender, EventArgs e)
         {
             ClearInput();
             PopulateListSong();
@@ -83,7 +83,7 @@ namespace ExamNETIntermediate
             buttonAdd.Enabled = true;
         }
 
-        private async void buttonAdd_Click(object sender, EventArgs e)
+        private async void ButtonAdd_Click(object sender, EventArgs e)
         {
             var title = textBoxTitle.Text;
             var artist = textBoxArtist.Text;
@@ -173,7 +173,7 @@ namespace ExamNETIntermediate
             PopulateListSong();
         }
 
-        private void listBoxSong_SelectedIndexChanged(object sender, EventArgs e)
+        private void ListBoxSong_SelectedIndexChanged(object sender, EventArgs e)
         {
             buttonAdd.Enabled = false;
             buttonDelete.Enabled = true;
@@ -206,7 +206,7 @@ namespace ExamNETIntermediate
             checkBoxIsAvailable.Checked = selectedSong.IsAvailable;
         }
 
-        private async void buttonUpdate_Click(object sender, EventArgs e)
+        private async void ButtonUpdate_Click(object sender, EventArgs e)
         {
             var selectedIndex = listBoxSong.SelectedIndex;
             var selectedSong = listBoxSong.Items[selectedIndex] as SongModel;
@@ -301,7 +301,7 @@ namespace ExamNETIntermediate
             PopulateListSong();
         }
 
-        private async void buttonDelete_Click(object sender, EventArgs e)
+        private async void ButtonDelete_Click(object sender, EventArgs e)
         {
             var selectedIndex = listBoxSong.SelectedIndex;
             var selectedSong = listBoxSong.Items[selectedIndex] as SongModel;
@@ -328,7 +328,7 @@ namespace ExamNETIntermediate
             }
         }
 
-        private void buttonSearch_Click(object sender, EventArgs e)
+        private void ButtonSearch_Click(object sender, EventArgs e)
         {
             var input = textBoxSearch.Text;
             if (input == string.Empty)
