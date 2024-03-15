@@ -65,14 +65,20 @@ namespace ExamNETIntermediate
         {
             GetDataListBox();
         }
+        private void numericUpDownLengthSeconds_ValueChanged(object sender, EventArgs e)
+        {
+            if (numericUpDownLengthSeconds.Value >= 60) //handling seconds overflow into minutes
+            {
+                numericUpDownLengthSeconds.Value = 0;
+                numericUpDownLengthMinutes.Value += 1;
+            }
+        }
 
         private async void buttonAdd_Click(object sender, EventArgs e)
         {
             SongModel? selectedItem = listBoxSongs.SelectedItem as SongModel;
-            SongModel newItem = new SongModel();
             if (selectedItem == null) { return; }
             GenreModel? inputGenre = comboBoxGenre.SelectedItem as GenreModel;
-
 
             //input form validation
             //case: empty|null
@@ -93,35 +99,16 @@ namespace ExamNETIntermediate
                 return;
             }
 
-            newItem.Title = textBoxTitle.Text;
-            newItem.Artist = textBoxArtist.Text;
-            newItem.GenreName = inputGenre.GenreName;
-            newItem.ReleaseDate = dateTimePickerReleaseDate.Value;
-            newItem.Length = (int)numericUpDownLengthMinutes.Value * 60 + (int)numericUpDownLengthSeconds.Value;
-            newItem.IsAvailable = checkBoxAvailable.Checked;
-
-            newItem.SongId = selectedItem.SongId;
-            newItem.ReleaseDate = selectedItem.ReleaseDate;
-
-            //same item validation
-            if (newItem.Equals(selectedItem))
-            {
-                labelMessage.Text = "No changes detected!";
-                return;
-            }
-
-            //TODO convert to input model
             SongInputModel input = new SongInputModel();
-            input.Title = newItem.Title;
-            input.Artist = newItem.Artist;
+            input.Title = textBoxTitle.Text;
+            input.Artist = textBoxArtist.Text;
             input.GenreId = inputGenre.GenreId;
-            input.ReleaseDate = newItem.ReleaseDate;
-            input.Length = newItem.Length;
-            input.IsAvailable = newItem.IsAvailable;
+            input.ReleaseDate = dateTimePickerReleaseDate.Value;
+            input.Length = (int)numericUpDownLengthMinutes.Value * 60 + (int)numericUpDownLengthSeconds.Value;
+            input.IsAvailable = checkBoxAvailable.Checked;
 
             var jsonContent = JsonConvert.SerializeObject(input);
             var content = new StringContent(jsonContent);
-            content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json");
             if (content == null) { return; }
 
             var response = await httpClient.PostAsync(baseUrl + "/song", content);
@@ -137,19 +124,66 @@ namespace ExamNETIntermediate
             }
         }
 
-        private void numericUpDownLengthSeconds_ValueChanged(object sender, EventArgs e)
+        private async void buttonEdit_Click(object sender, EventArgs e)
         {
-            if (numericUpDownLengthSeconds.Value >= 60) //handling seconds overflow into minutes
+            SongModel? selectedItem = listBoxSongs.SelectedItem as SongModel;
+            if (selectedItem == null) 
             {
-                numericUpDownLengthSeconds.Value = 0;
-                numericUpDownLengthMinutes.Value += 1;
+                labelMessage.Text = "selected item does not exist";
+                return; 
             }
-        }
+            GenreModel? inputGenre = comboBoxGenre.SelectedItem as GenreModel;
 
+            SongEditModel editItem = new SongEditModel();
+
+            //input form validation
+            //case: empty|null
+            if (string.IsNullOrEmpty(textBoxTitle.Text)
+                || string.IsNullOrEmpty(textBoxArtist.Text)
+                || inputGenre == null
+                || (numericUpDownLengthMinutes.Value == 0 && numericUpDownLengthSeconds.Value == 0))
+            {
+                labelMessage.Text = "Fields must not be empty!";
+                return;
+            }
+            //case: >7 days
+            DateTime currentTime = DateTime.UtcNow;
+            TimeSpan timeDiff = dateTimePickerReleaseDate.Value - currentTime;
+            if (timeDiff.Days > 7)
+            {
+                labelMessage.Text = "Release date can not be more than 7 days from now!";
+                return;
+            }
+
+            editItem.SongId = selectedItem.SongId;
+            editItem.Title = textBoxTitle.Text;
+            editItem.Artist = textBoxArtist.Text;
+            editItem.GenreId = inputGenre.GenreId;
+            editItem.Length = (int)numericUpDownLengthMinutes.Value * 60 + (int)numericUpDownLengthSeconds.Value;
+            editItem.ReleaseDate = dateTimePickerReleaseDate.Value;
+            editItem.IsAvailable = checkBoxAvailable.Checked;
+
+            var jsonContent = JsonConvert.SerializeObject(editItem);
+            var content = new StringContent(jsonContent);
+            content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json");
+
+            var response = await httpClient.PutAsync(baseUrl + "/song", content);
+            response.EnsureSuccessStatusCode();
+            if (response.IsSuccessStatusCode)
+            {
+                labelMessage.Text = "Edit success!";
+                GetDataListBox();
+            }
+            else
+            {
+                labelMessage.Text = "Edit failed!";
+            }
+
+        }
         private async void buttonDelete_Click(object sender, EventArgs e)
         {
             SongModel? selectedItem = listBoxSongs.SelectedItem as SongModel;
-            if(selectedItem == null)
+            if (selectedItem == null)
             {
                 labelMessage.Text = "Item does not exist!";
                 return;
@@ -169,5 +203,18 @@ namespace ExamNETIntermediate
                 labelMessage.Text = "Delete failed!";
             }
         }
+
+        private void buttonClearForm_Click(object sender, EventArgs e)
+        {
+            textBoxTitle.Text = "";
+            textBoxArtist.Text = "";
+            comboBoxGenre.SelectedItem = null;
+            numericUpDownLengthMinutes.Value = 0;
+            numericUpDownLengthSeconds.Value = 0;
+            checkBoxAvailable.Checked = false;
+
+            labelMessage.Text = "Waiting...";
+        }
+
     }
 }

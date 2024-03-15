@@ -32,6 +32,7 @@
             labelListBox = new Label();
             buttonRefresh = new Button();
             tableLayoutPanelForm = new TableLayoutPanel();
+            buttonClearForm = new Button();
             dateTimePickerReleaseDate = new DateTimePicker();
             buttonAdd = new Button();
             buttonEdit = new Button();
@@ -92,6 +93,7 @@
             tableLayoutPanelForm.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25.3882427F));
             tableLayoutPanelForm.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 24.8209057F));
             tableLayoutPanelForm.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 23.8280678F));
+            tableLayoutPanelForm.Controls.Add(buttonClearForm, 3, 0);
             tableLayoutPanelForm.Controls.Add(dateTimePickerReleaseDate, 1, 4);
             tableLayoutPanelForm.Controls.Add(buttonAdd, 1, 6);
             tableLayoutPanelForm.Controls.Add(buttonEdit, 2, 6);
@@ -121,6 +123,16 @@
             tableLayoutPanelForm.Size = new Size(413, 284);
             tableLayoutPanelForm.TabIndex = 3;
             // 
+            // buttonClearForm
+            // 
+            buttonClearForm.Location = new Point(316, 3);
+            buttonClearForm.Name = "buttonClearForm";
+            buttonClearForm.Size = new Size(94, 29);
+            buttonClearForm.TabIndex = 8;
+            buttonClearForm.Text = "Clear";
+            buttonClearForm.UseVisualStyleBackColor = true;
+            buttonClearForm.Click += buttonClearForm_Click;
+            // 
             // dateTimePickerReleaseDate
             // 
             tableLayoutPanelForm.SetColumnSpan(dateTimePickerReleaseDate, 3);
@@ -147,6 +159,7 @@
             buttonEdit.TabIndex = 5;
             buttonEdit.Text = "Edit";
             buttonEdit.UseVisualStyleBackColor = true;
+            buttonEdit.Click += buttonEdit_Click;
             // 
             // buttonDelete
             // 
@@ -351,5 +364,6 @@
         private Label labelSearch;
         private DateTimePicker dateTimePickerReleaseDate;
         private Label labelDatePicker;
+        private Button buttonClearForm;
     }
 }
