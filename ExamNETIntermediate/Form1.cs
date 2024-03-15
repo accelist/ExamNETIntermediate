@@ -108,7 +108,7 @@ namespace ExamNETIntermediate
         }
 
         /// <summary>
-        /// Method that processes form inputs and sends the new song to the API. Validation includes no fields are empty or zero, and the song's release date must be at most 7 days from now. Success/fail is displayed in the message label.
+        /// Method that processes form inputs and sends the new song to the API(POST). Validation includes no fields are empty or zero, and the song's release date must be at most 7 days from now. Success/fail is displayed in the message label. Form is cleared and lists deselected as well.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -160,7 +160,11 @@ namespace ExamNETIntermediate
                 labelMessage.Text = "Song upload failed!";
             }
         }
-
+        /// <summary>
+        /// Similar to the edit button event. The only major difference is that the POST and PUT API has different requirements, so uses different class. 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private async void buttonEdit_Click(object sender, EventArgs e)
         {
             SongModel? selectedItem = listBoxSongs.SelectedItem as SongModel;
@@ -214,6 +218,12 @@ namespace ExamNETIntermediate
             }
 
         }
+
+        /// <summary>
+        /// Delete button event. Grabs songId from the selected listbox item and sends a DELETE request to API.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private async void buttonDelete_Click(object sender, EventArgs e)
         {
             SongModel? selectedItem = listBoxSongs.SelectedItem as SongModel;
@@ -243,6 +253,11 @@ namespace ExamNETIntermediate
             ClearForm();
         }
 
+        /// <summary>
+        /// Method to search local list of songs. Detects change in textbox value and searches the local list according to input. Emptying out the textbox returns the whole list.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void textBoxSearch_TextChanged(object sender, EventArgs e)
         {
             listBoxSongs.Items.Clear();
@@ -258,7 +273,11 @@ namespace ExamNETIntermediate
             listBoxSongs.Items.AddRange(list.Cast<object>().ToArray());
             listBoxSongs.DisplayMember = "title";
         }
-
+        /// <summary>
+        /// Handles the 'seconds' numericUpDown control. Converts 60 seconds to one minute.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void numericUpDownLengthSeconds_ValueChanged(object sender, EventArgs e)
         {
             if (numericUpDownLengthSeconds.Value >= 60) 
