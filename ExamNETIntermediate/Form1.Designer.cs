@@ -129,7 +129,7 @@
             buttonClearForm.Name = "buttonClearForm";
             buttonClearForm.Size = new Size(94, 29);
             buttonClearForm.TabIndex = 8;
-            buttonClearForm.Text = "Clear";
+            buttonClearForm.Text = "Reset";
             buttonClearForm.UseVisualStyleBackColor = true;
             buttonClearForm.Click += buttonClearForm_Click;
             // 
@@ -249,6 +249,7 @@
             // comboBoxGenre
             // 
             tableLayoutPanelForm.SetColumnSpan(comboBoxGenre, 2);
+            comboBoxGenre.DropDownStyle = ComboBoxStyle.DropDownList;
             comboBoxGenre.FormattingEnabled = true;
             comboBoxGenre.Location = new Point(110, 83);
             comboBoxGenre.Name = "comboBoxGenre";
@@ -303,8 +304,10 @@
             // 
             textBoxSearch.Location = new Point(73, 393);
             textBoxSearch.Name = "textBoxSearch";
+            textBoxSearch.PlaceholderText = "enter song title...";
             textBoxSearch.Size = new Size(125, 27);
             textBoxSearch.TabIndex = 6;
+            textBoxSearch.TextChanged += textBoxSearch_TextChanged;
             // 
             // labelSearch
             // 

@@ -15,6 +15,8 @@ namespace ExamNETIntermediate
             InitializeComponent();
             GetDataListBox();
             GetDataGenre();
+            Deselect();
+            //TODO search functionality (plan: on value change, empty=no filter)
         }
 
         public async void GetDataListBox()
@@ -25,10 +27,9 @@ namespace ExamNETIntermediate
             var content = JsonConvert.DeserializeObject<List<SongModel>>(jsonContent);
             if (content != null) songs = content;
 
-            //Bisa avoid pake datasource dengan addrange, tapi agak ribet karena harus object. Sementara pake datasource dulu.
-            //var contentObject = songs.Cast<Object>().ToArray();
-            //listBoxSongs.Items.AddRange(contentObject);
-            listBoxSongs.DataSource = songs;
+            listBoxSongs.Items.Clear();
+            var contentObject = songs.Cast<Object>().ToArray();
+            listBoxSongs.Items.AddRange(contentObject);
             listBoxSongs.DisplayMember = "title";
         }
 
@@ -40,8 +41,10 @@ namespace ExamNETIntermediate
             var content = JsonConvert.DeserializeObject<List<GenreModel>>(jsonContent);
             if (content != null) genres = content;
 
-            comboBoxGenre.DataSource = genres;
+            var contentObject = genres.Cast<Object>().ToArray();
+            comboBoxGenre.Items.AddRange(contentObject);
             comboBoxGenre.DisplayMember = "genreName";
+            comboBoxGenre.SelectedIndex = -1;
         }
 
         private void listBoxSongs_SelectedIndexChanged(object sender, EventArgs e)
@@ -59,6 +62,9 @@ namespace ExamNETIntermediate
             numericUpDownLengthSeconds.Value = seconds;
             checkBoxAvailable.Checked = selectedItem.IsAvailable;
 
+            buttonEdit.Enabled = true;
+            buttonDelete.Enabled = true;
+            buttonAdd.Enabled = false;
         }
 
         private void buttonRefresh_Click(object sender, EventArgs e)
@@ -76,8 +82,6 @@ namespace ExamNETIntermediate
 
         private async void buttonAdd_Click(object sender, EventArgs e)
         {
-            SongModel? selectedItem = listBoxSongs.SelectedItem as SongModel;
-            if (selectedItem == null) { return; }
             GenreModel? inputGenre = comboBoxGenre.SelectedItem as GenreModel;
 
             //input form validation
@@ -109,14 +113,17 @@ namespace ExamNETIntermediate
 
             var jsonContent = JsonConvert.SerializeObject(input);
             var content = new StringContent(jsonContent);
+            content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json");
             if (content == null) { return; }
 
             var response = await httpClient.PostAsync(baseUrl + "/song", content);
             response.EnsureSuccessStatusCode();
             if (response.IsSuccessStatusCode)
             {
-                labelMessage.Text = "Song upload successful!";
                 GetDataListBox();
+                ClearForm();
+                labelMessage.Text = "Song upload successful!";
+
             }
             else
             {
@@ -127,10 +134,10 @@ namespace ExamNETIntermediate
         private async void buttonEdit_Click(object sender, EventArgs e)
         {
             SongModel? selectedItem = listBoxSongs.SelectedItem as SongModel;
-            if (selectedItem == null) 
+            if (selectedItem == null)
             {
                 labelMessage.Text = "selected item does not exist";
-                return; 
+                return;
             }
             GenreModel? inputGenre = comboBoxGenre.SelectedItem as GenreModel;
 
@@ -168,11 +175,12 @@ namespace ExamNETIntermediate
             content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json");
 
             var response = await httpClient.PutAsync(baseUrl + "/song", content);
-            response.EnsureSuccessStatusCode();
+            //response.EnsureSuccessStatusCode();
             if (response.IsSuccessStatusCode)
             {
-                labelMessage.Text = "Edit success!";
                 GetDataListBox();
+                ClearForm();
+                labelMessage.Text = "Edit success!";
             }
             else
             {
@@ -194,9 +202,9 @@ namespace ExamNETIntermediate
             response.EnsureSuccessStatusCode();
             if (response.IsSuccessStatusCode)
             {
-                labelMessage.Text = $"Delete success! (ID: {songId})";
                 GetDataListBox();
-
+                ClearForm();
+                labelMessage.Text = $"Delete success! (ID: {songId})";
             }
             else
             {
@@ -206,6 +214,11 @@ namespace ExamNETIntermediate
 
         private void buttonClearForm_Click(object sender, EventArgs e)
         {
+            ClearForm();
+        }
+
+        public void ClearForm()
+        {
             textBoxTitle.Text = "";
             textBoxArtist.Text = "";
             comboBoxGenre.SelectedItem = null;
@@ -214,7 +227,33 @@ namespace ExamNETIntermediate
             checkBoxAvailable.Checked = false;
 
             labelMessage.Text = "Waiting...";
+            Deselect();
         }
 
+
+        public void Deselect()
+        {
+            comboBoxGenre.SelectedIndex = -1;
+            listBoxSongs.SelectedIndex = -1;
+            buttonAdd.Enabled = true;
+            buttonEdit.Enabled = false;
+            buttonDelete.Enabled = false;
+        }
+
+        private void textBoxSearch_TextChanged(object sender, EventArgs e)
+        {
+            listBoxSongs.Items.Clear();
+            var search = textBoxSearch.Text;
+            if (string.IsNullOrEmpty(search))
+            {
+                listBoxSongs.Items.AddRange(songs.Cast<object>().ToArray());
+                listBoxSongs.DisplayMember = "title";
+
+                return;
+            }
+            var list = songs.Where(Q=>Q.Title.Contains(search)).ToList();
+            listBoxSongs.Items.AddRange(list.Cast<object>().ToArray());
+            listBoxSongs.DisplayMember = "title";
+        }
     }
 }
