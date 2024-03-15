@@ -332,6 +332,7 @@ namespace ExamNETIntermediate
             var input = textBoxSearch.Text;
             if (input == string.Empty)
             {
+                PopulateListSong();
                 labelVal2.Text = "Search box must not be empty!";
                 return;
             }
