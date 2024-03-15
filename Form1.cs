@@ -18,6 +18,10 @@ namespace ExamNETIntermediate
             InitializeComponent();
             PopulateListBox();
             PopulateComboBoxGenre();
+            buttonAdd.Enabled = true;
+            buttonUpdate.Enabled = false;
+            buttonDelete.Enabled = false;
+            labelNotification.Text = string.Empty;
         }
 
         // this method is used to refresh the page so the listBox can be updated, and also clear the inputs
@@ -38,9 +42,9 @@ namespace ExamNETIntermediate
             numericUpDownSec.Value = 0;
             checkBoxAvailable.Checked = false;
 
-            //buttonAdd.Enabled = true;
-            //buttonUpdate.Enabled = false;
-            //buttonDelete.Enabled = false;
+            buttonAdd.Enabled = true;
+            buttonUpdate.Enabled = false;
+            buttonDelete.Enabled = false;
         }
 
         // this method will populate listBoxSong, which is initially empty, with songs that we will get from the api
@@ -149,11 +153,11 @@ namespace ExamNETIntermediate
 
             if (response.IsSuccessStatusCode)
             {
-                labelNotification.Text = "Succesfully Inserted New Menu";
+                labelNotification.Text = "Succesfully Inserted New Song";
             }
             else
             {
-                labelNotification.Text = "Failed to Insert New Menu";
+                labelNotification.Text = "Failed to Insert New Song";
             }
             RefreshPage();
         }
@@ -226,11 +230,11 @@ namespace ExamNETIntermediate
 
             if (response.IsSuccessStatusCode)
             {
-                labelNotification.Text = "Succesfully Updaetd Menu";
+                labelNotification.Text = "Succesfully Updatedd Song";
             }
             else
             {
-                labelNotification.Text = "Failed to Update Menu";
+                labelNotification.Text = "Failed to Update Song";
             }
             RefreshPage();
         }
@@ -252,11 +256,11 @@ namespace ExamNETIntermediate
 
             if (response.IsSuccessStatusCode)
             {
-                labelNotification.Text = "Succesfully Deleted Menu";
+                labelNotification.Text = "Succesfully Deleted Song";
             }
             else
             {
-                labelNotification.Text = "Failed to Delete Menu";
+                labelNotification.Text = "Failed to Delete Song";
             }
             RefreshPage();
         }
@@ -279,9 +283,9 @@ namespace ExamNETIntermediate
                 dateTimePicker.Value = dateTime;
             }
 
-            //buttonAdd.Enabled = false;
-            //buttonUpdate.Enabled = true;
-            //buttonDelete.Enabled = true;
+            buttonAdd.Enabled = false;
+            buttonUpdate.Enabled = true;
+            buttonDelete.Enabled = true;
         }
 
         // this is the method called when buttonSearch is clicked, which will search through the Songs list which is based off the songs in the api, and display the results in listBoxSong

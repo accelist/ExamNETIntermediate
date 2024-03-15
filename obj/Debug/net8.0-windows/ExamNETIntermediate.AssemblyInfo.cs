@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("ExamNETIntermediate")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+577f7b2e83ff6102d80cd78fdd9514a85b45aee8")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+37acb894a6471dbac77daccf411b7f5ead8d463a")]
 [assembly: System.Reflection.AssemblyProductAttribute("ExamNETIntermediate")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ExamNETIntermediate")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
