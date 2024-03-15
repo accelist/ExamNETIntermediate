@@ -11,6 +11,7 @@ namespace ExamNETIntermediate
         public List<SongModel> SongModels { get; set; } = new List<SongModel>();
         public List<Genre> Genres { get; set; } = new List<Genre> { };
         public HttpClient HttpClient { get; set; } = new HttpClient();
+        public List<SongModel> Filtered { get; set; } = new List<SongModel>();
 
         public Form1()
         {
@@ -80,6 +81,12 @@ namespace ExamNETIntermediate
 
         private async void buttonAdd_Click(object sender, EventArgs e)
         {
+            var selectedIndex = listBoxSong.SelectedIndex;
+            if (selectedIndex != -1)
+            {
+                labelValidation.Text = "You cant add while selecting a song! Refresh First!";
+                return;
+            }
             var title = textBoxTitle.Text;
             var artist = textBoxArtist.Text;
             var genre = comboBoxGenre.SelectedItem as Genre;
@@ -179,6 +186,11 @@ namespace ExamNETIntermediate
         private async void buttonUpdate_Click(object sender, EventArgs e)
         {
             var selectedIndex = listBoxSong.SelectedIndex;
+            if (selectedIndex == -1)
+            {
+                labelValidation.Text = "Must select a song first!";
+                return;
+            }
             var selectedSong = listBoxSong.Items[selectedIndex] as SongModel;
             var title = textBoxTitle.Text;
             var artist = textBoxArtist.Text;
@@ -232,7 +244,7 @@ namespace ExamNETIntermediate
 
             var songModel = new SongInputModel
             {
-                SongId =selectedSong.SongId,
+                SongId = selectedSong.SongId,
                 Title = title,
                 Artist = artist,
                 GenreId = genre.GenreId,
@@ -259,6 +271,67 @@ namespace ExamNETIntermediate
             }
             ClearInput();
             PopulateListSong();
+        }
+
+        private async void buttonDelete_Click(object sender, EventArgs e)
+        {
+            var selectedIndex = listBoxSong.SelectedIndex;
+            if (selectedIndex == -1)
+            {
+                labelValidation.Text = "Must select a song first!";
+                return;
+            }
+            var selectedSong = listBoxSong.Items[selectedIndex] as SongModel;
+            if (selectedSong != null)
+            {
+                var response = await HttpClient.DeleteAsync("https://new-dev.accelist.com:10000/api/song/" + selectedSong.SongId);
+                response.EnsureSuccessStatusCode();
+
+                if (response.IsSuccessStatusCode)
+                {
+                    labelSuccess.Text = "Succesfully Deleted Song";
+                }
+                else
+                {
+                    labelSuccess.Text = "Failed to delete Song";
+                }
+                ClearInput();
+                PopulateListSong();
+            }
+            else
+            {
+                labelValidation.Text = "Must select a song first";
+                return;
+            }
+        }
+
+        private void buttonSearch_Click(object sender, EventArgs e)
+        {
+            Filtered.Clear();
+            var input = textBoxSearch.Text;
+            if (input == string.Empty)
+            {
+                labelVal2.Text = "Search box must not be empty!";
+                return;
+            }
+            foreach (var song in SongModels)
+            {
+                if(song.Title == input)
+                {
+                    Filtered.Add(song);
+                }else if(song.Artist == input)
+                {
+                    Filtered.Add(song);
+                }
+            }
+            var songSource = new BindingSource
+            {
+                DataSource = Filtered
+            };
+
+            listBoxSong.Items.Clear();
+            listBoxSong.Items.AddRange(Filtered.ToArray());
+            listBoxSong.DisplayMember = "Title";
         }
     }
 }

@@ -49,6 +49,10 @@
             buttonRefresh = new Button();
             labelValidation = new Label();
             labelSuccess = new Label();
+            labelSearch = new Label();
+            textBoxSearch = new TextBox();
+            labelVal2 = new Label();
+            buttonSearch = new Button();
             tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numericUpDownSecond).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numericUpDownMinute).BeginInit();
@@ -180,6 +184,7 @@
             buttonDelete.TabIndex = 8;
             buttonDelete.Text = "Delete";
             buttonDelete.UseVisualStyleBackColor = true;
+            buttonDelete.Click += buttonDelete_Click;
             // 
             // textBoxTitle
             // 
@@ -262,11 +267,50 @@
             labelSuccess.TabIndex = 4;
             labelSuccess.Text = "SuccessMassage";
             // 
+            // labelSearch
+            // 
+            labelSearch.AutoSize = true;
+            labelSearch.Location = new Point(695, 12);
+            labelSearch.Name = "labelSearch";
+            labelSearch.Size = new Size(60, 20);
+            labelSearch.TabIndex = 5;
+            labelSearch.Text = "Search :";
+            // 
+            // textBoxSearch
+            // 
+            textBoxSearch.Location = new Point(695, 35);
+            textBoxSearch.Name = "textBoxSearch";
+            textBoxSearch.Size = new Size(125, 27);
+            textBoxSearch.TabIndex = 6;
+            // 
+            // labelVal2
+            // 
+            labelVal2.AutoSize = true;
+            labelVal2.Location = new Point(695, 108);
+            labelVal2.Name = "labelVal2";
+            labelVal2.Size = new Size(143, 20);
+            labelVal2.TabIndex = 7;
+            labelVal2.Text = "ErrorSearchMassage";
+            // 
+            // buttonSearch
+            // 
+            buttonSearch.Location = new Point(695, 68);
+            buttonSearch.Name = "buttonSearch";
+            buttonSearch.Size = new Size(94, 29);
+            buttonSearch.TabIndex = 8;
+            buttonSearch.Text = "Search";
+            buttonSearch.UseVisualStyleBackColor = true;
+            buttonSearch.Click += buttonSearch_Click;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(959, 498);
+            Controls.Add(buttonSearch);
+            Controls.Add(labelVal2);
+            Controls.Add(textBoxSearch);
+            Controls.Add(labelSearch);
             Controls.Add(labelSuccess);
             Controls.Add(labelValidation);
             Controls.Add(buttonRefresh);
@@ -305,5 +349,9 @@
         private Button buttonRefresh;
         private Label labelValidation;
         private Label labelSuccess;
+        private Label labelSearch;
+        private TextBox textBoxSearch;
+        private Label labelVal2;
+        private Button buttonSearch;
     }
 }
