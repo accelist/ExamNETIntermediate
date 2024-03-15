@@ -14,7 +14,16 @@ namespace ExamNETIntermediate
         public Form1()
         {
             InitializeComponent();
+            InitializeFieldValues();
+            PopulateListBox();
+            PopulateComboBox();
+        }
 
+        /// <summary>
+        /// Sets input fields format and bounds.
+        /// </summary>
+        public void InitializeFieldValues()
+        {
             dateTimePickerReleaseDate.Format = DateTimePickerFormat.Custom;
             dateTimePickerReleaseDate.CustomFormat = "dd/MM/yyyy HH:mm:ss";
 
@@ -25,11 +34,11 @@ namespace ExamNETIntermediate
             numericUpDownSongLengthSeconds.Maximum = 59;
 
             dateTimePickerReleaseDate.MaxDate = DateTime.Now.AddDays(7);
-
-            PopulateListBox();
-            PopulateComboBox();
         }
 
+        /// <summary>
+        /// Pulling song data to listbox
+        /// </summary>
         public async void PopulateListBox()
         {
             var response = await _httpClient.GetAsync("https://new-dev.accelist.com:10000/api/song");
@@ -55,6 +64,9 @@ namespace ExamNETIntermediate
             ClearInput();
         }
 
+        /// <summary>
+        /// Pulling genre data to combobox
+        /// </summary>
         public async void PopulateComboBox()
         {
             var response = await _httpClient.GetAsync("https://new-dev.accelist.com:10000/api/genre");
@@ -80,11 +92,22 @@ namespace ExamNETIntermediate
             ClearInput();
         }
 
+        /// <summary>
+        /// Allows refreshing the listbox
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void ButtonRefresh_Click(object sender, EventArgs e)
         {
             PopulateListBox();
         }
 
+        /// <summary>
+        /// Putting selected song's info in the input fields. 
+        /// When the selected song has invalid release date (further 7 days from now), the date field will be set to the maximum date allowed.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void ListBoxSongs_SelectedIndexChanged(object sender, EventArgs e)
         {
 
@@ -108,6 +131,8 @@ namespace ExamNETIntermediate
                 numericUpDownSongLengthMinutes.Value = selectedSong.Length / 60;
                 numericUpDownSongLengthSeconds.Value = selectedSong.Length % 60;
 
+                labelReleaseDateWarning.Text = string.Empty;
+
                 try
                 {
                     dateTimePickerReleaseDate.Value = selectedSong.ReleaseDate.DateTime;
@@ -116,10 +141,6 @@ namespace ExamNETIntermediate
                 {
                     dateTimePickerReleaseDate.Value = DateTime.UtcNow.AddDays(7);
                     labelReleaseDateWarning.Text = "The selected song has release date further than 7 days from now. It has been set to current UTC time.";
-                }
-                finally
-                {
-                    labelReleaseDateWarning.Text = string.Empty;
                 }
 
                 checkBoxSongAvailability.Checked = selectedSong.IsAvailable;
@@ -130,6 +151,11 @@ namespace ExamNETIntermediate
             }
         }
 
+        /// <summary>
+        /// Enables adding new song based on data entered in the input field.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private async void ButtonAdd_Click(object sender, EventArgs e)
         {
             var songTitle = textBoxSongTitle.Text;
@@ -195,6 +221,11 @@ namespace ExamNETIntermediate
             PopulateListBox();
         }
 
+        /// <summary>
+        ///  Enables updating selected song based on data entered in the input fields.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private async void ButtonUpdate_Click(object sender, EventArgs e)
         {
             var selectedIndex = listBoxSongs.SelectedIndex;
@@ -269,6 +300,11 @@ namespace ExamNETIntermediate
             PopulateListBox();
         }
 
+        /// <summary>
+        /// enables deleting song selected on the listbox by clicking delete button
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private async void ButtonDelete_Click(object sender, EventArgs e)
         {
             var selectedIndex = listBoxSongs.SelectedIndex;
@@ -295,6 +331,11 @@ namespace ExamNETIntermediate
             PopulateListBox();
         }
 
+        /// <summary>
+        /// Allows searching through the listbox. The search results are updated on searchbox value change.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void textBoxSearch_TextChanged(object sender, EventArgs e)
         {
             var query = textBoxSearch.Text;
@@ -318,6 +359,9 @@ namespace ExamNETIntermediate
             }
         }
         
+        /// <summary>
+        /// Resets the input fields
+        /// </summary>
         public void ClearInput()
         {
             textBoxSongTitle.Text = string.Empty;
@@ -341,7 +385,7 @@ namespace ExamNETIntermediate
             buttonUpdate.Enabled = false;
             buttonDelete.Enabled = false;
         }
-
+        
         /// <summary>
         /// Allow deselecting item on listbox by clicking empty space on form.
         /// </summary>
