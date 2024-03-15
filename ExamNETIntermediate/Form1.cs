@@ -9,9 +9,8 @@ namespace ExamNETIntermediate
     public partial class Form1 : Form
     {
         public List<SongModel> SongModels { get; set; } = new List<SongModel>();
-        public List<Genre> Genres { get; set; } = new List<Genre> { };
+        public List<Genre> Genres { get; set; } = new List<Genre>();
         public HttpClient HttpClient { get; set; } = new HttpClient();
-        public List<SongModel> Filtered { get; set; } = new List<SongModel>();
 
         public Form1()
         {
@@ -307,23 +306,15 @@ namespace ExamNETIntermediate
 
         private void buttonSearch_Click(object sender, EventArgs e)
         {
-            Filtered.Clear();
             var input = textBoxSearch.Text;
             if (input == string.Empty)
             {
                 labelVal2.Text = "Search box must not be empty!";
                 return;
             }
-            foreach (var song in SongModels)
-            {
-                if(song.Title == input)
-                {
-                    Filtered.Add(song);
-                }else if(song.Artist == input)
-                {
-                    Filtered.Add(song);
-                }
-            }
+
+            var Filtered = SongModels.Where(Q => Q.Title == input || Q.Artist == input).ToList();
+
             var songSource = new BindingSource
             {
                 DataSource = Filtered
