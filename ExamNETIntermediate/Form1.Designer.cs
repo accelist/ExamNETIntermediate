@@ -32,6 +32,7 @@
             labelListBox = new Label();
             buttonRefresh = new Button();
             tableLayoutPanelForm = new TableLayoutPanel();
+            labelMinutes = new Label();
             buttonClearForm = new Button();
             dateTimePickerReleaseDate = new DateTimePicker();
             buttonAdd = new Button();
@@ -49,6 +50,7 @@
             numericUpDownLengthMinutes = new NumericUpDown();
             numericUpDownLengthSeconds = new NumericUpDown();
             labelDatePicker = new Label();
+            labelSeconds = new Label();
             labelStatus = new Label();
             labelMessage = new Label();
             textBoxSearch = new TextBox();
@@ -88,16 +90,19 @@
             // 
             // tableLayoutPanelForm
             // 
-            tableLayoutPanelForm.ColumnCount = 4;
-            tableLayoutPanelForm.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25.9627857F));
-            tableLayoutPanelForm.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25.3882427F));
-            tableLayoutPanelForm.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 24.8209057F));
-            tableLayoutPanelForm.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 23.8280678F));
-            tableLayoutPanelForm.Controls.Add(buttonClearForm, 3, 0);
+            tableLayoutPanelForm.ColumnCount = 6;
+            tableLayoutPanelForm.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 28F));
+            tableLayoutPanelForm.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 12.5F));
+            tableLayoutPanelForm.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 12.5F));
+            tableLayoutPanelForm.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 12.5F));
+            tableLayoutPanelForm.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 12.5F));
+            tableLayoutPanelForm.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 22F));
+            tableLayoutPanelForm.Controls.Add(labelMinutes, 2, 3);
+            tableLayoutPanelForm.Controls.Add(buttonClearForm, 5, 0);
             tableLayoutPanelForm.Controls.Add(dateTimePickerReleaseDate, 1, 4);
             tableLayoutPanelForm.Controls.Add(buttonAdd, 1, 6);
-            tableLayoutPanelForm.Controls.Add(buttonEdit, 2, 6);
-            tableLayoutPanelForm.Controls.Add(buttonDelete, 3, 6);
+            tableLayoutPanelForm.Controls.Add(buttonEdit, 3, 6);
+            tableLayoutPanelForm.Controls.Add(buttonDelete, 5, 6);
             tableLayoutPanelForm.Controls.Add(textBoxArtist, 1, 1);
             tableLayoutPanelForm.Controls.Add(textBoxTitle, 1, 0);
             tableLayoutPanelForm.Controls.Add(labelTitle, 0, 0);
@@ -108,9 +113,10 @@
             tableLayoutPanelForm.Controls.Add(checkBoxAvailable, 1, 5);
             tableLayoutPanelForm.Controls.Add(comboBoxGenre, 1, 2);
             tableLayoutPanelForm.Controls.Add(numericUpDownLengthMinutes, 1, 3);
-            tableLayoutPanelForm.Controls.Add(numericUpDownLengthSeconds, 2, 3);
+            tableLayoutPanelForm.Controls.Add(numericUpDownLengthSeconds, 3, 3);
             tableLayoutPanelForm.Controls.Add(labelDatePicker, 0, 4);
-            tableLayoutPanelForm.Location = new Point(301, 53);
+            tableLayoutPanelForm.Controls.Add(labelSeconds, 4, 3);
+            tableLayoutPanelForm.Location = new Point(274, 53);
             tableLayoutPanelForm.Name = "tableLayoutPanelForm";
             tableLayoutPanelForm.RowCount = 7;
             tableLayoutPanelForm.RowStyles.Add(new RowStyle(SizeType.Absolute, 40F));
@@ -123,11 +129,22 @@
             tableLayoutPanelForm.Size = new Size(413, 284);
             tableLayoutPanelForm.TabIndex = 3;
             // 
+            // labelMinutes
+            // 
+            labelMinutes.Anchor = AnchorStyles.Left;
+            labelMinutes.AutoSize = true;
+            labelMinutes.Font = new Font("Segoe UI", 8F);
+            labelMinutes.Location = new Point(169, 130);
+            labelMinutes.Name = "labelMinutes";
+            labelMinutes.Size = new Size(32, 19);
+            labelMinutes.TabIndex = 8;
+            labelMinutes.Text = "min";
+            // 
             // buttonClearForm
             // 
-            buttonClearForm.Location = new Point(316, 3);
+            buttonClearForm.Location = new Point(322, 3);
             buttonClearForm.Name = "buttonClearForm";
-            buttonClearForm.Size = new Size(94, 29);
+            buttonClearForm.Size = new Size(88, 29);
             buttonClearForm.TabIndex = 8;
             buttonClearForm.Text = "Reset";
             buttonClearForm.UseVisualStyleBackColor = true;
@@ -135,15 +152,17 @@
             // 
             // dateTimePickerReleaseDate
             // 
-            tableLayoutPanelForm.SetColumnSpan(dateTimePickerReleaseDate, 3);
-            dateTimePickerReleaseDate.Location = new Point(110, 163);
+            tableLayoutPanelForm.SetColumnSpan(dateTimePickerReleaseDate, 5);
+            dateTimePickerReleaseDate.Location = new Point(118, 163);
             dateTimePickerReleaseDate.Name = "dateTimePickerReleaseDate";
             dateTimePickerReleaseDate.Size = new Size(250, 27);
             dateTimePickerReleaseDate.TabIndex = 8;
+            dateTimePickerReleaseDate.Value = new DateTime(2024, 3, 15, 0, 0, 0, 0);
             // 
             // buttonAdd
             // 
-            buttonAdd.Location = new Point(110, 243);
+            tableLayoutPanelForm.SetColumnSpan(buttonAdd, 2);
+            buttonAdd.Location = new Point(118, 243);
             buttonAdd.Name = "buttonAdd";
             buttonAdd.Size = new Size(94, 29);
             buttonAdd.TabIndex = 4;
@@ -153,9 +172,10 @@
             // 
             // buttonEdit
             // 
-            buttonEdit.Location = new Point(214, 243);
+            tableLayoutPanelForm.SetColumnSpan(buttonEdit, 2);
+            buttonEdit.Location = new Point(220, 243);
             buttonEdit.Name = "buttonEdit";
-            buttonEdit.Size = new Size(76, 29);
+            buttonEdit.Size = new Size(96, 29);
             buttonEdit.TabIndex = 5;
             buttonEdit.Text = "Edit";
             buttonEdit.UseVisualStyleBackColor = true;
@@ -163,9 +183,9 @@
             // 
             // buttonDelete
             // 
-            buttonDelete.Location = new Point(316, 243);
+            buttonDelete.Location = new Point(322, 243);
             buttonDelete.Name = "buttonDelete";
-            buttonDelete.Size = new Size(78, 29);
+            buttonDelete.Size = new Size(88, 29);
             buttonDelete.TabIndex = 6;
             buttonDelete.Text = "Delete";
             buttonDelete.UseVisualStyleBackColor = true;
@@ -173,16 +193,16 @@
             // 
             // textBoxArtist
             // 
-            tableLayoutPanelForm.SetColumnSpan(textBoxArtist, 2);
-            textBoxArtist.Location = new Point(110, 43);
+            tableLayoutPanelForm.SetColumnSpan(textBoxArtist, 4);
+            textBoxArtist.Location = new Point(118, 43);
             textBoxArtist.Name = "textBoxArtist";
             textBoxArtist.Size = new Size(179, 27);
             textBoxArtist.TabIndex = 10;
             // 
             // textBoxTitle
             // 
-            tableLayoutPanelForm.SetColumnSpan(textBoxTitle, 2);
-            textBoxTitle.Location = new Point(110, 3);
+            tableLayoutPanelForm.SetColumnSpan(textBoxTitle, 4);
+            textBoxTitle.Location = new Point(118, 3);
             textBoxTitle.Name = "textBoxTitle";
             textBoxTitle.Size = new Size(179, 27);
             textBoxTitle.TabIndex = 4;
@@ -190,7 +210,7 @@
             // labelTitle
             // 
             labelTitle.Anchor = AnchorStyles.Right;
-            labelTitle.Location = new Point(63, 10);
+            labelTitle.Location = new Point(71, 10);
             labelTitle.Name = "labelTitle";
             labelTitle.Size = new Size(41, 20);
             labelTitle.TabIndex = 5;
@@ -200,7 +220,7 @@
             // 
             labelArtist.Anchor = AnchorStyles.Right;
             labelArtist.AutoSize = true;
-            labelArtist.Location = new Point(57, 50);
+            labelArtist.Location = new Point(65, 50);
             labelArtist.Name = "labelArtist";
             labelArtist.Size = new Size(47, 20);
             labelArtist.TabIndex = 6;
@@ -210,7 +230,7 @@
             // 
             labelGenre.Anchor = AnchorStyles.Right;
             labelGenre.AutoSize = true;
-            labelGenre.Location = new Point(53, 90);
+            labelGenre.Location = new Point(61, 90);
             labelGenre.Name = "labelGenre";
             labelGenre.Size = new Size(51, 20);
             labelGenre.TabIndex = 7;
@@ -220,7 +240,7 @@
             // 
             labelLength.Anchor = AnchorStyles.Right;
             labelLength.AutoSize = true;
-            labelLength.Location = new Point(50, 130);
+            labelLength.Location = new Point(58, 130);
             labelLength.Name = "labelLength";
             labelLength.Size = new Size(54, 20);
             labelLength.TabIndex = 8;
@@ -230,7 +250,7 @@
             // 
             labelAvailable.Anchor = AnchorStyles.Right;
             labelAvailable.AutoSize = true;
-            labelAvailable.Location = new Point(20, 210);
+            labelAvailable.Location = new Point(28, 210);
             labelAvailable.Name = "labelAvailable";
             labelAvailable.Size = new Size(84, 20);
             labelAvailable.TabIndex = 9;
@@ -239,7 +259,8 @@
             // checkBoxAvailable
             // 
             checkBoxAvailable.AutoSize = true;
-            checkBoxAvailable.Location = new Point(110, 203);
+            tableLayoutPanelForm.SetColumnSpan(checkBoxAvailable, 3);
+            checkBoxAvailable.Location = new Point(118, 203);
             checkBoxAvailable.Name = "checkBoxAvailable";
             checkBoxAvailable.Size = new Size(93, 24);
             checkBoxAvailable.TabIndex = 11;
@@ -248,27 +269,27 @@
             // 
             // comboBoxGenre
             // 
-            tableLayoutPanelForm.SetColumnSpan(comboBoxGenre, 2);
+            tableLayoutPanelForm.SetColumnSpan(comboBoxGenre, 4);
             comboBoxGenre.DropDownStyle = ComboBoxStyle.DropDownList;
             comboBoxGenre.FormattingEnabled = true;
-            comboBoxGenre.Location = new Point(110, 83);
+            comboBoxGenre.Location = new Point(118, 83);
             comboBoxGenre.Name = "comboBoxGenre";
             comboBoxGenre.Size = new Size(179, 28);
             comboBoxGenre.TabIndex = 12;
             // 
             // numericUpDownLengthMinutes
             // 
-            numericUpDownLengthMinutes.Location = new Point(110, 123);
+            numericUpDownLengthMinutes.Location = new Point(118, 123);
             numericUpDownLengthMinutes.Name = "numericUpDownLengthMinutes";
-            numericUpDownLengthMinutes.Size = new Size(97, 27);
+            numericUpDownLengthMinutes.Size = new Size(45, 27);
             numericUpDownLengthMinutes.TabIndex = 13;
             // 
             // numericUpDownLengthSeconds
             // 
-            numericUpDownLengthSeconds.Location = new Point(214, 123);
+            numericUpDownLengthSeconds.Location = new Point(220, 123);
             numericUpDownLengthSeconds.Maximum = new decimal(new int[] { 60, 0, 0, 0 });
             numericUpDownLengthSeconds.Name = "numericUpDownLengthSeconds";
-            numericUpDownLengthSeconds.Size = new Size(76, 27);
+            numericUpDownLengthSeconds.Size = new Size(45, 27);
             numericUpDownLengthSeconds.TabIndex = 14;
             numericUpDownLengthSeconds.ValueChanged += numericUpDownLengthSeconds_ValueChanged;
             // 
@@ -276,16 +297,27 @@
             // 
             labelDatePicker.Anchor = AnchorStyles.Right;
             labelDatePicker.AutoSize = true;
-            labelDatePicker.Location = new Point(5, 170);
+            labelDatePicker.Location = new Point(13, 170);
             labelDatePicker.Name = "labelDatePicker";
             labelDatePicker.Size = new Size(99, 20);
             labelDatePicker.TabIndex = 15;
             labelDatePicker.Text = "Release Date:";
             // 
+            // labelSeconds
+            // 
+            labelSeconds.Anchor = AnchorStyles.Left;
+            labelSeconds.AutoSize = true;
+            labelSeconds.Font = new Font("Segoe UI", 8F);
+            labelSeconds.Location = new Point(271, 130);
+            labelSeconds.Name = "labelSeconds";
+            labelSeconds.Size = new Size(28, 19);
+            labelSeconds.TabIndex = 16;
+            labelSeconds.Text = "sec";
+            // 
             // labelStatus
             // 
             labelStatus.AutoSize = true;
-            labelStatus.Location = new Point(301, 370);
+            labelStatus.Location = new Point(274, 370);
             labelStatus.Name = "labelStatus";
             labelStatus.Size = new Size(62, 20);
             labelStatus.TabIndex = 4;
@@ -294,7 +326,7 @@
             // labelMessage
             // 
             labelMessage.AutoSize = true;
-            labelMessage.Location = new Point(301, 400);
+            labelMessage.Location = new Point(274, 400);
             labelMessage.Name = "labelMessage";
             labelMessage.Size = new Size(69, 20);
             labelMessage.TabIndex = 5;
@@ -368,5 +400,7 @@
         private DateTimePicker dateTimePickerReleaseDate;
         private Label labelDatePicker;
         private Button buttonClearForm;
+        private Label labelMinutes;
+        private Label labelSeconds;
     }
 }

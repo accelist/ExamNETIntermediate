@@ -3,7 +3,6 @@ using Newtonsoft.Json;
 
 namespace ExamNETIntermediate
 {
-    //TODO add labels for minutes and seconds. Might need additional columns to make it work
     public partial class Form1 : Form
     {
         List<SongModel> songs = new List<SongModel>();
@@ -16,7 +15,6 @@ namespace ExamNETIntermediate
             GetDataListBox();
             GetDataGenre();
             Deselect();
-            //TODO search functionality (plan: on value change, empty=no filter)
         }
 
         public async void GetDataListBox()
@@ -44,7 +42,28 @@ namespace ExamNETIntermediate
             var contentObject = genres.Cast<Object>().ToArray();
             comboBoxGenre.Items.AddRange(contentObject);
             comboBoxGenre.DisplayMember = "genreName";
+        }
+
+        public void ClearForm()
+        {
+            textBoxTitle.Text = "";
+            textBoxArtist.Text = "";
+            comboBoxGenre.SelectedItem = null;
+            numericUpDownLengthMinutes.Value = 0;
+            numericUpDownLengthSeconds.Value = 0;
+            checkBoxAvailable.Checked = false;
+
+            labelMessage.Text = "Waiting...";
+            Deselect();
+        }
+
+        public void Deselect()
+        {
             comboBoxGenre.SelectedIndex = -1;
+            listBoxSongs.SelectedIndex = -1;
+            buttonAdd.Enabled = true;
+            buttonEdit.Enabled = false;
+            buttonDelete.Enabled = false;
         }
 
         private void listBoxSongs_SelectedIndexChanged(object sender, EventArgs e)
@@ -71,21 +90,12 @@ namespace ExamNETIntermediate
         {
             GetDataListBox();
         }
-        private void numericUpDownLengthSeconds_ValueChanged(object sender, EventArgs e)
-        {
-            if (numericUpDownLengthSeconds.Value >= 60) //handling seconds overflow into minutes
-            {
-                numericUpDownLengthSeconds.Value = 0;
-                numericUpDownLengthMinutes.Value += 1;
-            }
-        }
 
         private async void buttonAdd_Click(object sender, EventArgs e)
         {
             GenreModel? inputGenre = comboBoxGenre.SelectedItem as GenreModel;
 
             //input form validation
-            //case: empty|null
             if (string.IsNullOrEmpty(textBoxTitle.Text)
                 || string.IsNullOrEmpty(textBoxArtist.Text)
                 || inputGenre == null
@@ -94,7 +104,6 @@ namespace ExamNETIntermediate
                 labelMessage.Text = "Fields must not be empty!";
                 return;
             }
-            //case: >7 days
             DateTime currentTime = DateTime.UtcNow;
             TimeSpan timeDiff = dateTimePickerReleaseDate.Value - currentTime;
             if (timeDiff.Days > 7)
@@ -123,7 +132,6 @@ namespace ExamNETIntermediate
                 GetDataListBox();
                 ClearForm();
                 labelMessage.Text = "Song upload successful!";
-
             }
             else
             {
@@ -140,11 +148,8 @@ namespace ExamNETIntermediate
                 return;
             }
             GenreModel? inputGenre = comboBoxGenre.SelectedItem as GenreModel;
-
             SongEditModel editItem = new SongEditModel();
 
-            //input form validation
-            //case: empty|null
             if (string.IsNullOrEmpty(textBoxTitle.Text)
                 || string.IsNullOrEmpty(textBoxArtist.Text)
                 || inputGenre == null
@@ -153,7 +158,6 @@ namespace ExamNETIntermediate
                 labelMessage.Text = "Fields must not be empty!";
                 return;
             }
-            //case: >7 days
             DateTime currentTime = DateTime.UtcNow;
             TimeSpan timeDiff = dateTimePickerReleaseDate.Value - currentTime;
             if (timeDiff.Days > 7)
@@ -175,7 +179,6 @@ namespace ExamNETIntermediate
             content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json");
 
             var response = await httpClient.PutAsync(baseUrl + "/song", content);
-            //response.EnsureSuccessStatusCode();
             if (response.IsSuccessStatusCode)
             {
                 GetDataListBox();
@@ -217,29 +220,6 @@ namespace ExamNETIntermediate
             ClearForm();
         }
 
-        public void ClearForm()
-        {
-            textBoxTitle.Text = "";
-            textBoxArtist.Text = "";
-            comboBoxGenre.SelectedItem = null;
-            numericUpDownLengthMinutes.Value = 0;
-            numericUpDownLengthSeconds.Value = 0;
-            checkBoxAvailable.Checked = false;
-
-            labelMessage.Text = "Waiting...";
-            Deselect();
-        }
-
-
-        public void Deselect()
-        {
-            comboBoxGenre.SelectedIndex = -1;
-            listBoxSongs.SelectedIndex = -1;
-            buttonAdd.Enabled = true;
-            buttonEdit.Enabled = false;
-            buttonDelete.Enabled = false;
-        }
-
         private void textBoxSearch_TextChanged(object sender, EventArgs e)
         {
             listBoxSongs.Items.Clear();
@@ -251,9 +231,20 @@ namespace ExamNETIntermediate
 
                 return;
             }
-            var list = songs.Where(Q=>Q.Title.Contains(search)).ToList();
+            var list = songs.Where(Q => Q.Title.Contains(search)).ToList();
             listBoxSongs.Items.AddRange(list.Cast<object>().ToArray());
             listBoxSongs.DisplayMember = "title";
         }
+
+        private void numericUpDownLengthSeconds_ValueChanged(object sender, EventArgs e)
+        {
+            if (numericUpDownLengthSeconds.Value >= 60) 
+            {
+                numericUpDownLengthSeconds.Value = 0;
+                numericUpDownLengthMinutes.Value += 1;
+            }
+        }
+
+
     }
 }
