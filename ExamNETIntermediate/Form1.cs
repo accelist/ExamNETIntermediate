@@ -91,6 +91,7 @@ namespace ExamNETIntermediate
             var minute = numericUpDownMinute.Value * 60;
             var second = numericUpDownSecond.Value;
             var length = minute + second;
+            // diubah jadi utc disini
             var releaseDate = dateTimePickerRelease.Value.ToUniversalTime();
             var isAvailable = checkBoxIsAvailable.Checked;
 
@@ -109,6 +110,11 @@ namespace ExamNETIntermediate
                 labelValidation.Text = "Genre must not be Empty!";
                 return;
             }
+            if(Genres.Contains(genre) == false)
+            {
+                labelValidation.Text = "Genre must be in the data genre API!";
+                return;
+            }
             if (second < 0 || second > 59)
             {
                 labelValidation.Text = "Seconds must be between 0 to 59!";
@@ -119,6 +125,7 @@ namespace ExamNETIntermediate
                 labelValidation.Text = "Length must not be empty!";
                 return;
             }
+            // date picker gk bisa null makanya warning
             if (releaseDate == null)
             {
                 labelValidation.Text = "Release date must not be empty!";
@@ -129,6 +136,7 @@ namespace ExamNETIntermediate
                 labelValidation.Text = "Release date tidak boleh lebih dari 7 hari ke depan!";
                 return;
             }
+            // checkbox gk bisa null jga
             if (isAvailable == null)
             {
                 labelValidation.Text = "Checkbox isAvailable tidak boleh empty!";
@@ -212,6 +220,7 @@ namespace ExamNETIntermediate
             var minute = numericUpDownMinute.Value * 60;
             var second = numericUpDownSecond.Value;
             var length = minute + second;
+            // diubah jadi utc disini
             var releaseDate = dateTimePickerRelease.Value.ToUniversalTime();
             var isAvailable = checkBoxIsAvailable.Checked;
 
@@ -228,6 +237,11 @@ namespace ExamNETIntermediate
             if (genre == null)
             {
                 labelValidation.Text = "Genre must not be Empty!";
+                return;
+            }
+            if (Genres.Contains(genre) == false)
+            {
+                labelValidation.Text = "Genre must be in the data genre API!";
                 return;
             }
             if (second < 0 || second > 59)
