@@ -16,7 +16,12 @@ namespace ExamNETIntermediate
             GetDataGenre();
             Deselect();
         }
-
+        /// <summary>
+        /// Uses http GET request to the API to get song list. Listbox displays each song's title. Clears and repopulates listbox and internal List every call.
+        /// </summary>
+        /// <remarks>
+        /// Does not use .DataSource to populate because it autoselects listbox and ruins other functions.
+        /// </remarks>
         public async void GetDataListBox()
         {
             var response = await httpClient.GetAsync(baseUrl + "/song");
@@ -30,7 +35,9 @@ namespace ExamNETIntermediate
             listBoxSongs.Items.AddRange(contentObject);
             listBoxSongs.DisplayMember = "title";
         }
-
+        /// <summary>
+        /// Gets genre list from API. Since genre can only be changed by host, this is a one time call in initialization. Genre populates combobox, displays genre name.
+        /// </summary>
         public async void GetDataGenre()
         {
             var response = await httpClient.GetAsync(baseUrl + "/genre");
@@ -43,7 +50,9 @@ namespace ExamNETIntermediate
             comboBoxGenre.Items.AddRange(contentObject);
             comboBoxGenre.DisplayMember = "genreName";
         }
-
+        /// <summary>
+        /// Method to reset the form. Sets fields values to null/zero/empty. Also deselects lisbox and combobox.
+        /// </summary>
         public void ClearForm()
         {
             textBoxTitle.Text = "";
@@ -56,7 +65,9 @@ namespace ExamNETIntermediate
             labelMessage.Text = "Waiting...";
             Deselect();
         }
-
+        /// <summary>
+        /// Deselects listbox and combobox. When listbox is not selecting an item, user can only use add button for new songs.
+        /// </summary>
         public void Deselect()
         {
             comboBoxGenre.SelectedIndex = -1;
@@ -65,7 +76,11 @@ namespace ExamNETIntermediate
             buttonEdit.Enabled = false;
             buttonDelete.Enabled = false;
         }
-
+        /// <summary>
+        /// Method called when user selects a listbox item. This populates all the form's fields with the selected item's data. User can then edit or delete the item from list, but can not add new items until deselect happens. 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void listBoxSongs_SelectedIndexChanged(object sender, EventArgs e)
         {
             SongModel? selectedItem = listBoxSongs.SelectedItem as SongModel;
@@ -74,7 +89,8 @@ namespace ExamNETIntermediate
             textBoxTitle.Text = selectedItem.Title;
             textBoxArtist.Text = selectedItem.Artist;
             comboBoxGenre.SelectedItem = genres.Where(Q => Q.GenreName == selectedItem.GenreName).FirstOrDefault();
-            dateTimePickerReleaseDate.Value = selectedItem.ReleaseDate;
+            DateTime utcTime = selectedItem.ReleaseDate;
+            dateTimePickerReleaseDate.Value = utcTime.ToLocalTime();
             int minutes = selectedItem.Length / 60;
             int seconds = selectedItem.Length % 60;
             numericUpDownLengthMinutes.Value = minutes;
@@ -91,6 +107,11 @@ namespace ExamNETIntermediate
             GetDataListBox();
         }
 
+        /// <summary>
+        /// Method that processes form inputs and sends the new song to the API. Validation includes no fields are empty or zero, and the song's release date must be at most 7 days from now. Success/fail is displayed in the message label.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private async void buttonAdd_Click(object sender, EventArgs e)
         {
             GenreModel? inputGenre = comboBoxGenre.SelectedItem as GenreModel;
@@ -116,7 +137,8 @@ namespace ExamNETIntermediate
             input.Title = textBoxTitle.Text;
             input.Artist = textBoxArtist.Text;
             input.GenreId = inputGenre.GenreId;
-            input.ReleaseDate = dateTimePickerReleaseDate.Value;
+            DateTime localTime = dateTimePickerReleaseDate.Value;
+            input.ReleaseDate = localTime.ToUniversalTime();
             input.Length = (int)numericUpDownLengthMinutes.Value * 60 + (int)numericUpDownLengthSeconds.Value;
             input.IsAvailable = checkBoxAvailable.Checked;
 
@@ -171,7 +193,8 @@ namespace ExamNETIntermediate
             editItem.Artist = textBoxArtist.Text;
             editItem.GenreId = inputGenre.GenreId;
             editItem.Length = (int)numericUpDownLengthMinutes.Value * 60 + (int)numericUpDownLengthSeconds.Value;
-            editItem.ReleaseDate = dateTimePickerReleaseDate.Value;
+            DateTime localTime = dateTimePickerReleaseDate.Value;
+            editItem.ReleaseDate = localTime.ToUniversalTime();
             editItem.IsAvailable = checkBoxAvailable.Checked;
 
             var jsonContent = JsonConvert.SerializeObject(editItem);

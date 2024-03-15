@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace ExamNETIntermediate.Models
 {
+    /// <summary>
+    /// Classses for storing Song information. Different variables are required for GET, POST, and PUT, so there are 3 different classes.
+    /// </summary>
     internal class SongModel
     {
         public int SongId { get; set; }
@@ -20,7 +23,6 @@ namespace ExamNETIntermediate.Models
 
     internal class SongInputModel
     {
-        //POST req: title, artist, genreId, length, releaseDate, isAvailable
         public string Title { get; set; } = string.Empty;
         public string Artist { get; set; } = string.Empty;
         public int GenreId { get; set; }
