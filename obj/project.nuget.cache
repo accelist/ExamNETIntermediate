@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "TmuZEGg5+2NFYvz7Z/4GWJs/pN7FKeuJwGhfBvstaIELLJWO4VvJ6C8N5F9+ugFoDfkalr7AYayqQuohxxLRoA==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\Benjamin\\Desktop\\ben\\accelist\\training\\ExamNETIntermediate\\ExamNETIntermediate\\ExamNETIntermediate.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Benjamin\\.nuget\\packages\\newtonsoft.json\\13.0.3\\newtonsoft.json.13.0.3.nupkg.sha512"
+  ],
+  "logs": []
+}
