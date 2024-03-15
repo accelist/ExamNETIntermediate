@@ -289,11 +289,11 @@ namespace ExamNETIntermediate
         }
 
         // this is the method called when buttonSearch is clicked, which will search through the Songs list which is based off the songs in the api, and display the results in listBoxSong
-        private void buttonSearch_Click(object sender, EventArgs e)
+        private async void buttonSearch_Click(object sender, EventArgs e)
         {
             var searchedSong = textBoxSearch.Text;
 
-            var response = _httpClient.GetAsync("https://new-dev.accelist.com:10000/api/song").GetAwaiter().GetResult();
+            var response = await _httpClient.GetAsync("https://new-dev.accelist.com:10000/api/song");
             response.EnsureSuccessStatusCode();
             var jsonContent = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
             var content = JsonConvert.DeserializeObject<List<SongModel>>(jsonContent);
