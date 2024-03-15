@@ -28,24 +28,24 @@
         /// </summary>
         private void InitializeComponent()
         {
-            listBoxSong = new ListBox();
+            listBoxSongs = new ListBox();
             labelListBox = new Label();
             buttonRefresh = new Button();
             tableLayoutPanelForm = new TableLayoutPanel();
+            buttonAdd = new Button();
+            buttonEdit = new Button();
+            buttonDelete = new Button();
+            textBoxArtist = new TextBox();
             textBoxTitle = new TextBox();
             labelTitle = new Label();
             labelArtist = new Label();
             labelGenre = new Label();
             labelLength = new Label();
             labelAvailable = new Label();
-            textBoxArtist = new TextBox();
             checkBoxAvailable = new CheckBox();
             comboBoxGenre = new ComboBox();
             numericUpDownLengthMinutes = new NumericUpDown();
             numericUpDownLengthSeconds = new NumericUpDown();
-            buttonAdd = new Button();
-            buttonEdit = new Button();
-            buttonDelete = new Button();
             labelStatus = new Label();
             labelHtttpMessage = new Label();
             tableLayoutPanelForm.SuspendLayout();
@@ -53,13 +53,14 @@
             ((System.ComponentModel.ISupportInitialize)numericUpDownLengthSeconds).BeginInit();
             SuspendLayout();
             // 
-            // listBoxSong
+            // listBoxSongs
             // 
-            listBoxSong.FormattingEnabled = true;
-            listBoxSong.Location = new Point(12, 53);
-            listBoxSong.Name = "listBoxSong";
-            listBoxSong.Size = new Size(186, 284);
-            listBoxSong.TabIndex = 0;
+            listBoxSongs.FormattingEnabled = true;
+            listBoxSongs.Location = new Point(12, 53);
+            listBoxSongs.Name = "listBoxSongs";
+            listBoxSongs.Size = new Size(186, 284);
+            listBoxSongs.TabIndex = 0;
+            listBoxSongs.SelectedIndexChanged += listBoxSongs_SelectedIndexChanged;
             // 
             // labelListBox
             // 
@@ -78,6 +79,7 @@
             buttonRefresh.TabIndex = 2;
             buttonRefresh.Text = "Refresh";
             buttonRefresh.UseVisualStyleBackColor = true;
+            buttonRefresh.Click += buttonRefresh_Click;
             // 
             // tableLayoutPanelForm
             // 
@@ -111,6 +113,42 @@
             tableLayoutPanelForm.RowStyles.Add(new RowStyle(SizeType.Absolute, 40F));
             tableLayoutPanelForm.Size = new Size(413, 241);
             tableLayoutPanelForm.TabIndex = 3;
+            // 
+            // buttonAdd
+            // 
+            buttonAdd.Location = new Point(106, 203);
+            buttonAdd.Name = "buttonAdd";
+            buttonAdd.Size = new Size(94, 29);
+            buttonAdd.TabIndex = 4;
+            buttonAdd.Text = "Add";
+            buttonAdd.UseVisualStyleBackColor = true;
+            buttonAdd.Click += buttonAdd_Click;
+            // 
+            // buttonEdit
+            // 
+            buttonEdit.Location = new Point(209, 203);
+            buttonEdit.Name = "buttonEdit";
+            buttonEdit.Size = new Size(94, 29);
+            buttonEdit.TabIndex = 5;
+            buttonEdit.Text = "Edit";
+            buttonEdit.UseVisualStyleBackColor = true;
+            // 
+            // buttonDelete
+            // 
+            buttonDelete.Location = new Point(312, 203);
+            buttonDelete.Name = "buttonDelete";
+            buttonDelete.Size = new Size(94, 29);
+            buttonDelete.TabIndex = 6;
+            buttonDelete.Text = "Delete";
+            buttonDelete.UseVisualStyleBackColor = true;
+            // 
+            // textBoxArtist
+            // 
+            tableLayoutPanelForm.SetColumnSpan(textBoxArtist, 2);
+            textBoxArtist.Location = new Point(106, 43);
+            textBoxArtist.Name = "textBoxArtist";
+            textBoxArtist.Size = new Size(200, 27);
+            textBoxArtist.TabIndex = 10;
             // 
             // textBoxTitle
             // 
@@ -165,14 +203,6 @@
             labelAvailable.TabIndex = 9;
             labelAvailable.Text = "IsAvailable:";
             // 
-            // textBoxArtist
-            // 
-            tableLayoutPanelForm.SetColumnSpan(textBoxArtist, 2);
-            textBoxArtist.Location = new Point(106, 43);
-            textBoxArtist.Name = "textBoxArtist";
-            textBoxArtist.Size = new Size(200, 27);
-            textBoxArtist.TabIndex = 10;
-            // 
             // checkBoxAvailable
             // 
             checkBoxAvailable.AutoSize = true;
@@ -202,36 +232,10 @@
             // numericUpDownLengthSeconds
             // 
             numericUpDownLengthSeconds.Location = new Point(209, 123);
+            numericUpDownLengthSeconds.Maximum = new decimal(new int[] { 60, 0, 0, 0 });
             numericUpDownLengthSeconds.Name = "numericUpDownLengthSeconds";
             numericUpDownLengthSeconds.Size = new Size(97, 27);
             numericUpDownLengthSeconds.TabIndex = 14;
-            // 
-            // buttonAdd
-            // 
-            buttonAdd.Location = new Point(106, 203);
-            buttonAdd.Name = "buttonAdd";
-            buttonAdd.Size = new Size(94, 29);
-            buttonAdd.TabIndex = 4;
-            buttonAdd.Text = "Add";
-            buttonAdd.UseVisualStyleBackColor = true;
-            // 
-            // buttonEdit
-            // 
-            buttonEdit.Location = new Point(209, 203);
-            buttonEdit.Name = "buttonEdit";
-            buttonEdit.Size = new Size(94, 29);
-            buttonEdit.TabIndex = 5;
-            buttonEdit.Text = "Edit";
-            buttonEdit.UseVisualStyleBackColor = true;
-            // 
-            // buttonDelete
-            // 
-            buttonDelete.Location = new Point(312, 203);
-            buttonDelete.Name = "buttonDelete";
-            buttonDelete.Size = new Size(94, 29);
-            buttonDelete.TabIndex = 6;
-            buttonDelete.Text = "Delete";
-            buttonDelete.UseVisualStyleBackColor = true;
             // 
             // labelStatus
             // 
@@ -261,7 +265,7 @@
             Controls.Add(tableLayoutPanelForm);
             Controls.Add(buttonRefresh);
             Controls.Add(labelListBox);
-            Controls.Add(listBoxSong);
+            Controls.Add(listBoxSongs);
             Name = "Form1";
             Text = "Form1";
             tableLayoutPanelForm.ResumeLayout(false);
@@ -274,7 +278,7 @@
 
         #endregion
 
-        private ListBox listBoxSong;
+        private ListBox listBoxSongs;
         private Label labelListBox;
         private Button buttonRefresh;
         private TableLayoutPanel tableLayoutPanelForm;

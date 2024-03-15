@@ -17,4 +17,9 @@ namespace ExamNETIntermediate.Models
         public bool IsAvailable { get; set; }
 
     }
+
+    internal class SongInputModel
+    {
+        //POST req: title, artist, genreId, length, releaseDate, isAvailable
+    }
 }
