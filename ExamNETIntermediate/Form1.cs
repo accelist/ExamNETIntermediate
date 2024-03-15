@@ -73,7 +73,6 @@ namespace ExamNETIntermediate
             checkBoxIsAvailable.Checked = false;
         }
 
-        // Nama function otomatis buat pas di click jadi nama depan huruf kecil klo ganti takut error
         private void ButtonRefresh_Click(object sender, EventArgs e)
         {
             ClearInput();
