@@ -21,5 +21,11 @@ namespace ExamNETIntermediate.Models
     internal class SongInputModel
     {
         //POST req: title, artist, genreId, length, releaseDate, isAvailable
+        public string Title { get; set; } = string.Empty;
+        public string Artist { get; set; } = string.Empty;
+        public int GenreId { get; set; }
+        public int Length { get; set; }
+        public DateTime ReleaseDate { get; set; }
+        public bool IsAvailable { get; set; }
     }
 }
