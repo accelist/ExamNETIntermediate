@@ -70,16 +70,16 @@ namespace ExamNETIntermediate
         {
             SongModel? selectedItem = listBoxSongs.SelectedItem as SongModel;
             SongModel newItem = new SongModel();
-            if(selectedItem == null) { return; }
+            if (selectedItem == null) { return; }
             GenreModel? inputGenre = comboBoxGenre.SelectedItem as GenreModel;
 
 
             //input form validation
             //case: empty|null
             if (string.IsNullOrEmpty(textBoxTitle.Text)
-                ||string.IsNullOrEmpty(textBoxArtist.Text)
+                || string.IsNullOrEmpty(textBoxArtist.Text)
                 || inputGenre == null
-                || (numericUpDownLengthMinutes.Value==0 && numericUpDownLengthSeconds.Value == 0))
+                || (numericUpDownLengthMinutes.Value == 0 && numericUpDownLengthSeconds.Value == 0))
             {
                 labelMessage.Text = "Fields must not be empty!";
                 return;
@@ -101,7 +101,7 @@ namespace ExamNETIntermediate
             newItem.IsAvailable = checkBoxAvailable.Checked;
 
             newItem.SongId = selectedItem.SongId;
-            newItem.ReleaseDate= selectedItem.ReleaseDate;
+            newItem.ReleaseDate = selectedItem.ReleaseDate;
 
             //same item validation
             if (newItem.Equals(selectedItem))
@@ -119,10 +119,10 @@ namespace ExamNETIntermediate
             input.Length = newItem.Length;
             input.IsAvailable = newItem.IsAvailable;
 
-            var jsonContent = JsonConvert.SerializeObject(input); 
+            var jsonContent = JsonConvert.SerializeObject(input);
             var content = new StringContent(jsonContent);
             content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json");
-            if (content==null) { return; }
+            if (content == null) { return; }
 
             var response = await httpClient.PostAsync(baseUrl + "/song", content);
             response.EnsureSuccessStatusCode();
@@ -139,10 +139,34 @@ namespace ExamNETIntermediate
 
         private void numericUpDownLengthSeconds_ValueChanged(object sender, EventArgs e)
         {
-            if(numericUpDownLengthSeconds.Value >= 60) //handling seconds overflow into minutes
+            if (numericUpDownLengthSeconds.Value >= 60) //handling seconds overflow into minutes
             {
                 numericUpDownLengthSeconds.Value = 0;
                 numericUpDownLengthMinutes.Value += 1;
+            }
+        }
+
+        private async void buttonDelete_Click(object sender, EventArgs e)
+        {
+            SongModel? selectedItem = listBoxSongs.SelectedItem as SongModel;
+            if(selectedItem == null)
+            {
+                labelMessage.Text = "Item does not exist!";
+                return;
+            }
+            int songId = selectedItem.SongId;
+
+            var response = await httpClient.DeleteAsync(baseUrl + $"/song/{songId}");
+            response.EnsureSuccessStatusCode();
+            if (response.IsSuccessStatusCode)
+            {
+                labelMessage.Text = $"Delete success! (ID: {songId})";
+                GetDataListBox();
+
+            }
+            else
+            {
+                labelMessage.Text = "Delete failed!";
             }
         }
     }
