@@ -17,6 +17,8 @@ namespace ExamNETIntermediate
             InitializeComponent();
             PopulateListSong();
             PopulateComboGenre();
+            buttonDelete.Enabled = false;
+            buttonUpdate.Enabled = false;
         }
 
         public async void PopulateListSong()
@@ -76,16 +78,13 @@ namespace ExamNETIntermediate
         {
             ClearInput();
             PopulateListSong();
+            buttonDelete.Enabled = false;
+            buttonUpdate.Enabled = false;
+            buttonAdd.Enabled = true;
         }
 
         private async void buttonAdd_Click(object sender, EventArgs e)
         {
-            var selectedIndex = listBoxSong.SelectedIndex;
-            if (selectedIndex != -1)
-            {
-                labelValidation.Text = "You cant add while selecting a song! Refresh First!";
-                return;
-            }
             var title = textBoxTitle.Text;
             var artist = textBoxArtist.Text;
             var genre = comboBoxGenre.SelectedItem as Genre;
@@ -168,8 +167,25 @@ namespace ExamNETIntermediate
 
         private void listBoxSong_SelectedIndexChanged(object sender, EventArgs e)
         {
+            buttonAdd.Enabled = false;
+            buttonDelete.Enabled = true;
+            buttonUpdate.Enabled = true;
+            
             var selectedIndex = listBoxSong.SelectedIndex;
+            if (selectedIndex == -1)
+            {
+                // biar klo gk sengaja klik kosong di listbox gk error
+                // sma gk bisa update sma delete
+                buttonDelete.Enabled = false;
+                buttonUpdate.Enabled = false;
+                buttonAdd.Enabled = true;
+                return;
+            }
             var selectedSong = listBoxSong.Items[selectedIndex] as SongModel;
+            if (selectedSong == null)
+            {
+                return;
+            }
             textBoxTitle.Text = selectedSong.Title;
             textBoxArtist.Text = selectedSong.Artist;
             var currentSong = Genres.FirstOrDefault(Q => Q.GenreName == selectedSong.GenreName);
@@ -185,12 +201,11 @@ namespace ExamNETIntermediate
         private async void buttonUpdate_Click(object sender, EventArgs e)
         {
             var selectedIndex = listBoxSong.SelectedIndex;
-            if (selectedIndex == -1)
-            {
-                labelValidation.Text = "Must select a song first!";
-                return;
-            }
             var selectedSong = listBoxSong.Items[selectedIndex] as SongModel;
+            if (selectedSong == null)
+            {
+                return ;
+            }
             var title = textBoxTitle.Text;
             var artist = textBoxArtist.Text;
             var genre = comboBoxGenre.SelectedItem as Genre;
@@ -275,11 +290,6 @@ namespace ExamNETIntermediate
         private async void buttonDelete_Click(object sender, EventArgs e)
         {
             var selectedIndex = listBoxSong.SelectedIndex;
-            if (selectedIndex == -1)
-            {
-                labelValidation.Text = "Must select a song first!";
-                return;
-            }
             var selectedSong = listBoxSong.Items[selectedIndex] as SongModel;
             if (selectedSong != null)
             {
