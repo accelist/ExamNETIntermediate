@@ -66,7 +66,7 @@ namespace ExamNETIntermediate
             GetDataListBox();
         }
 
-        private void buttonAdd_Click(object sender, EventArgs e)
+        private async void buttonAdd_Click(object sender, EventArgs e)
         {
             SongModel? selectedItem = listBoxSongs.SelectedItem as SongModel;
             SongModel newItem = new SongModel();
@@ -86,8 +86,8 @@ namespace ExamNETIntermediate
             }
             //case: >7 days
             DateTime currentTime = DateTime.UtcNow;
-            TimeSpan timeDiff = currentTime - dateTimePickerReleaseDate.Value;
-            if (Math.Abs(timeDiff.Days) > 7)
+            TimeSpan timeDiff = dateTimePickerReleaseDate.Value - currentTime;
+            if (timeDiff.Days > 7)
             {
                 labelMessage.Text = "Release date can not be more than 7 days from now!";
                 return;
@@ -96,6 +96,7 @@ namespace ExamNETIntermediate
             newItem.Title = textBoxTitle.Text;
             newItem.Artist = textBoxArtist.Text;
             newItem.GenreName = inputGenre.GenreName;
+            newItem.ReleaseDate = dateTimePickerReleaseDate.Value;
             newItem.Length = (int)numericUpDownLengthMinutes.Value * 60 + (int)numericUpDownLengthSeconds.Value;
             newItem.IsAvailable = checkBoxAvailable.Checked;
 
@@ -110,12 +111,30 @@ namespace ExamNETIntermediate
             }
 
             //TODO convert to input model
+            SongInputModel input = new SongInputModel();
+            input.Title = newItem.Title;
+            input.Artist = newItem.Artist;
+            input.GenreId = inputGenre.GenreId;
+            input.ReleaseDate = newItem.ReleaseDate;
+            input.Length = newItem.Length;
+            input.IsAvailable = newItem.IsAvailable;
 
-            var jsonContent = JsonConvert.SerializeObject(newItem); 
+            var jsonContent = JsonConvert.SerializeObject(input); 
             var content = new StringContent(jsonContent);
-            if(content==null) { return; }
+            content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json");
+            if (content==null) { return; }
 
-            
+            var response = await httpClient.PostAsync(baseUrl + "/song", content);
+            response.EnsureSuccessStatusCode();
+            if (response.IsSuccessStatusCode)
+            {
+                labelMessage.Text = "Song upload successful!";
+                GetDataListBox();
+            }
+            else
+            {
+                labelMessage.Text = "Song upload failed!";
+            }
         }
 
         private void numericUpDownLengthSeconds_ValueChanged(object sender, EventArgs e)
